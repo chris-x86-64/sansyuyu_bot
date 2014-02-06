@@ -2,6 +2,7 @@
 
 from optparse import OptionParser
 from sanchan.config import Config
+from sanchan.auth import SanchanOAuthHandler
 import sys
 
 parser = OptionParser()
@@ -10,4 +11,8 @@ parser.add_option("-t", "--test-mode", action = "store_true", dest = "test_mode"
 (options, args) = parser.parse_args()
 
 config = Config(options.config_file)
-
+try:
+	oauth = SanchanOAuthHandler(config)
+except:
+	print "Authentication failed."
+	sys.exit(1)
