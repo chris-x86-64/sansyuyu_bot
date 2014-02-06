@@ -1,11 +1,12 @@
 import yaml
+import codecs
 import sys
 
 class Config():
 	def __init__(self, path):
 		self.path = path
 		try:
-			self.stream = open(self.path, 'r')
+			self.stream = codecs.open(self.path, 'r', 'utf-8')
 		except TypeError, e:
 			print e
 			print "Please specify the path to config file (--config CONFIG_FILE)"
@@ -19,3 +20,6 @@ class Config():
 
 	def OAuthKeys(self):
 		return self.config['oauth']
+
+	def patterns(self):
+		return self.config['patterns']
