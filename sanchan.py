@@ -18,14 +18,15 @@ except TypeError:
 	print options.config_file + " doesn't contain OAuth keys."
 	sys.exit(1)
 
-
 if options.test_mode == True:
 	print "[DEBUG] Testing mode initiated."
 	print "[DEBUG] Testing OAuth keys..."
 	from tweepy import API, error
 	api = API(auth_handler = oauth)
 	try:
-		print api.me()
+		me = api.me()
 	except error.TweepError, e:
-		print e
-		sys.exit(1)
+		print "[EMERG] Re-authentication required."
+		oauth_new = SanchanOAuthHandler(config).request()
+
+	print "[INFO] Successfully authenticated as %s!" % me.screen_name
