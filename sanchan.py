@@ -11,8 +11,21 @@ parser.add_option("-t", "--test-mode", action = "store_true", dest = "test_mode"
 (options, args) = parser.parse_args()
 
 config = Config(options.config_file)
+
 try:
-	oauth = SanchanOAuthHandler(config)
-except:
-	print "Authentication failed."
+	oauth = SanchanOAuthHandler(config).authenticate()
+except TypeError:
+	print options.config_file + " doesn't contain OAuth keys."
 	sys.exit(1)
+
+
+if options.test_mode == True:
+	print "[DEBUG] Testing mode initiated."
+	print "[DEBUG] Testing OAuth keys..."
+	from tweepy import API, error
+	api = API(auth_handler = oauth)
+	try:
+		print api.me()
+	except error.TweepError, e:
+		print e
+		sys.exit(1)
