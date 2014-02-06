@@ -34,7 +34,7 @@ class Test():
 		self.api = API(auth_handler = oauth)
 		print "[DEBUG] Testing mode initiated."
 
-	def test_credentials(self):
+	def credentials(self):
 		print "[DEBUG] Testing OAuth keys..."
 		try:
 			me = self.api.me()

@@ -18,6 +18,7 @@ except TypeError:
 	print options.config_file + " doesn't contain OAuth keys."
 	sys.exit(1)
 
+# Initiate test mode on --test-mode option.
 if options.test_mode == True:
 	test = Test(oauth)
-	test.test_credentials()
+	test.credentials()
