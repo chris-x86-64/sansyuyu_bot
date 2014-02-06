@@ -2,7 +2,7 @@
 
 from optparse import OptionParser
 from sanchan.config import Config
-from sanchan.auth import SanchanOAuthHandler
+from sanchan.auth import SanchanOAuthHandler, Test
 import sys
 
 parser = OptionParser()
@@ -19,14 +19,5 @@ except TypeError:
 	sys.exit(1)
 
 if options.test_mode == True:
-	print "[DEBUG] Testing mode initiated."
-	print "[DEBUG] Testing OAuth keys..."
-	from tweepy import API, error
-	api = API(auth_handler = oauth)
-	try:
-		me = api.me()
-	except error.TweepError, e:
-		print "[EMERG] Re-authentication required."
-		oauth_new = SanchanOAuthHandler(config).request()
-
-	print "[INFO] Successfully authenticated as %s!" % me.screen_name
+	test = Test(oauth)
+	test.test_credentials()

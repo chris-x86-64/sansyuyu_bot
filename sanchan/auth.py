@@ -1,9 +1,10 @@
-from tweepy import OAuthHandler, error
+from tweepy import OAuthHandler, API, error
 import sys
 
 class SanchanOAuthHandler():
 	def __init__(self, config):
-		self.keys = config.OAuthKeys()
+		self.config = config
+		self.keys = self.config.OAuthKeys()
 		self.oauth = OAuthHandler(self.keys['consumer_key'],
 				self.keys['consumer_secret'],
 				secure = True
@@ -27,3 +28,19 @@ class SanchanOAuthHandler():
 		print "access_token: " + self.oauth.access_token.key
 		print "access_token_secret: " + self.oauth.access_token.secret
 		sys.exit(0)
+
+class Test():
+	def __init__(self, oauth):
+		self.api = API(auth_handler = oauth)
+		print "[DEBUG] Testing mode initiated."
+
+	def test_credentials(self):
+		print "[DEBUG] Testing OAuth keys..."
+		try:
+			me = self.api.me()
+		except error.TweepError, e:
+			print "[EMERG] " + e
+			print "[EMERG] Re-authentication required!"
+			SanchanOAuthHandler(self.config).request()
+
+		print "[INFO] Successfully authenticated as %s!" % me.screen_name
