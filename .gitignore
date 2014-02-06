@@ -1,3 +1,4 @@
 san_env/*
 *.swp
 config-testing.yml
+*.pyc
