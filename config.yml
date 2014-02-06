@@ -4,4 +4,13 @@ oauth:
     consumer_secret: 'PUT_YOUR_OAUTH_SECRET_KEY_HERE'
     access_token_key: 'PUT_YOUR_OAUTH_TOKEN_KEY_HERE'
     access_token_secret: 'PUT_YOUR_OAUTH_TOKEN_SECRET_HERE'
+
+patterns:
+    'ナンパされたなう': 'once'
+    '(今日は|今日|)(\d+)回ナンパされ(た|ました)': 'today'
+#   The regex /今日は([0-9]+)回ナンパされ(た|ました)/ can match either of these:
+#   '今日は1回ナンパされました'
+#   '今日は3回ナンパされた'
+#   '今日は5回ナンパされたぞおおおおおお'
+#   'やばい、今日は7回ナンパされたｗｗｗｗｗｗｗｗ'
 ...
