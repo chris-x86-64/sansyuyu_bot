@@ -21,9 +21,9 @@ except TypeError:
 test = Test(oauth)
 test.credentials()
 
-streamer = Stream(oauth)
+streamer = Stream(oauth, config.patterns())
 try:
-	streamer.filter(['166976355'])
+	streamer.filter(['166976355', '90394630'])
 except KeyboardInterrupt:
-	print "[CRITICAL] Exiting saitan-bot on SIGINT. Good bye."
+	print "[CRITICAL] Exiting sansyuyu_bot on SIGINT. Good bye."
 	sys.exit(0)

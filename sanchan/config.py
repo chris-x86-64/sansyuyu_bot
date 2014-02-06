@@ -20,3 +20,6 @@ class Config():
 
 	def OAuthKeys(self):
 		return self.config['oauth']
+
+	def patterns(self):
+		return self.config['patterns']

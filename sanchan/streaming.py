@@ -1,23 +1,33 @@
 # -*- coding: utf-8 -*-
 
 import tweepy
+from sanchan.receive import pattern_match
+from sanchan.post import NormalTweet
 
 class StreamListener(tweepy.StreamListener):
+	def __init__(self, oauth, patterns):
+		super(StreamListener, self).__init__()
+		self.patterns = patterns
+		self.api = tweepy.API(auth_handler = oauth)
+
 	def on_connect(self):
-		print "[INFO] Initiating connection to twitter.com"
+		print "[INFO] Initiated connection to twitter.com"
 
 	def on_status(self, status):
-		try:
-			print status.text
-			return
-		except:
-			pass
+		if hasattr(status, 'text') and not hasattr(status, 'retweeted_status'):
+			print u"[DEBUG] @%s: %s" % (status.user.screen_name, status.text)
+			message = pattern_match(self.patterns, status.text)
+			if message:
+				print u"[NOTICE] Pattern detected: %s" % message
+				tweet_handler = NormalTweet(self.api)
+				tweet_handler.retweet(status.id)
+				tweet_handler.post(message, None)
 
 	def on_error(self, code):
-		print code
-		return False
+		print "[EMERG] Error: " + code
+		return True
 
 class Stream(tweepy.Stream):
-	def __init__(self, oauth):
-		listener = StreamListener()
+	def __init__(self, oauth, patterns):
+		listener = StreamListener(oauth, patterns)
 		super(Stream, self).__init__(auth = oauth, listener = listener)
