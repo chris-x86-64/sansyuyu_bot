@@ -2,6 +2,7 @@
 
 import tweepy
 from sanchan.receive import pattern_match
+from sanchan.store import DataStore
 from sanchan.post import NormalTweet
 import sanchan.options
 
@@ -18,12 +19,16 @@ class StreamListener(tweepy.StreamListener):
 	def on_status(self, status):
 		if hasattr(status, 'text') and not hasattr(status, 'retweeted_status'):
 			print u"[DEBUG] @%s: %s" % (status.user.screen_name, status.text)
-			message = pattern_match(self.patterns, status.text)
-			if message:
-				print u"[NOTICE] Pattern detected: %s" % message
-				tweet_handler = NormalTweet(self.api)
-				tweet_handler.retweet(status.id)
-				tweet_handler.post(message, None)
+			match = pattern_match(self.patterns, status.text)
+			if match:
+				print "[NOTICE] Pattern detected: "
+				print match
+				if match['message'] != 'Test code.':
+					tweet_handler = NormalTweet(self.api)
+					tweet_handler.retweet(status.id)
+					tweet_handler.post(match['message'], None)
+				with DataStore() as db_handler:
+					db_handler.put(status, match['count'])
 
 	def on_error(self, code):
 		print "[EMERG] Error: " + code

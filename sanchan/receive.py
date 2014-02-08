@@ -8,9 +8,11 @@ def pattern_match(patterns, text):
 			p_type = patterns[p]
 			if p_type == 'today':
 				count = int(match.group(2))
-				return u"サンちゃんは今日%d回ナンパされたそうです。" % count
+				return {'message': u"サンちゃんは今日%d回ナンパされたそうです。" % count, count: count}
 			elif p_type == 'once':
-				return u"サンちゃんがただ今ナンパされています。"
+				return {'message': u"サンちゃんがただ今ナンパされています。", count: 1}
+			elif p_type == 'test':
+				return {'message': 'Test code.', 'count': 0}
 			else:
 				return False
 
