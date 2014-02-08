@@ -23,3 +23,6 @@ class Config():
 
 	def patterns(self):
 		return self.config['patterns']
+
+	def dump(self):
+		return self.config

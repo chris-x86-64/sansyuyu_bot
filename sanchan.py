@@ -2,6 +2,7 @@
 
 from optparse import OptionParser
 from sanchan.config import Config
+import sanchan.options
 from sanchan.auth import SanchanOAuthHandler, Test
 from sanchan.streaming import Stream
 import sys
@@ -11,6 +12,7 @@ parser.add_option("-c", "--config", action = "store", dest = "config_file", help
 (options, args) = parser.parse_args()
 
 config = Config(options.config_file)
+sanchan.options.config = config.dump()
 
 try:
 	oauth = SanchanOAuthHandler(config).authenticate()

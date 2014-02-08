@@ -3,6 +3,7 @@
 import tweepy
 from sanchan.receive import pattern_match
 from sanchan.post import NormalTweet
+import sanchan.options
 
 class StreamListener(tweepy.StreamListener):
 	def __init__(self, oauth, patterns):
@@ -12,6 +13,7 @@ class StreamListener(tweepy.StreamListener):
 
 	def on_connect(self):
 		print "[INFO] Initiated connection to twitter.com"
+		print sanchan.options.config
 
 	def on_status(self, status):
 		if hasattr(status, 'text') and not hasattr(status, 'retweeted_status'):
